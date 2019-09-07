@@ -1,0 +1,131 @@
+{
+	"name": "appraise",
+	"displayName": "Git Appraise",
+	"description": "Provide Git Appraise Integration into VSCode",
+	"version": "0.1.0",
+	"publisher": "yne",
+	"engines": {
+		"vscode": "^1.96.0"
+	},
+	"main": "./main.js",
+	"extensionKind": [
+		"workspace"
+	],
+	"activationEvents": [
+		"onStartupFinished"
+	],
+	"contributes": {
+		"commands": [
+			{
+				"command": "appraise.create",
+				"title": "Request a Review",
+				"icon": "$(add)"
+			},
+			{
+				"command": "appraise.toggle",
+				"title": "Display a Review",
+				"icon": "$(eye)"
+			},
+			{
+				"command": "appraise.synchro",
+				"title": "Sync",
+				"icon": "$(sync)"
+			},
+			{
+				"command": "appraise.comment",
+				"title": "Comment",
+				"icon": "$(comment-discussion)"
+			},
+			{
+				"command": "appraise.resolve",
+				"title": "Resolve",
+				"icon": "$(check)"
+			},
+			{
+				"command": "appraise.unresolve",
+				"title": "Unresolve",
+				"icon": "$(warning)"
+			}
+		],
+		"menus": {
+			"view/item/context": [
+				{
+					"description": "create button in the 'review.tree' tree view",
+					"command": "appraise.toggle",
+					"group": "inline@1",
+					"when": "view == appraise.tree && viewItem == appraise"
+				},
+				{
+					"description": "create button in the 'review.tree' tree view",
+					"command": "appraise.comment",
+					"group": "inline@1",
+					"when": "view == appraise.tree && viewItem == appraise"
+				},
+				{
+					"description": "create button in the 'review.tree' tree view",
+					"command": "appraise.comment",
+					"group": "inline@2",
+					"when": "view == appraise.tree && viewItem == appraise.comment"
+				}
+			],
+			"view/title": [
+				{
+					"command": "appraise.create",
+					"group": "navigation",
+					"when": "view == appraise.tree"
+				},
+				{
+					"command": "appraise.synchro",
+					"group": "navigation",
+					"when": "view == appraise.tree"
+				}
+			],
+			"comments/commentThread/title___": [
+				{
+					"command": "appraise.resolve",
+					"when": "commentController =~ /^appraise/",
+					"__comment__": "shown at thread title next to [^] collapse icon (.group=inline/navigation is useless)"
+				}
+			],
+			"comments/commentThread/context": [
+				{
+					"command": "appraise.comment",
+					"when": "commentController =~ /^appraise/",
+					"__comment__": "shown as action button when redacting review (.group=inline/navigation is useless)"
+				},
+				{
+					"command": "appraise.resolve",
+					"when": "commentController =~ /^appraise/ && !commentThreadIsEmpty",
+					"__comment__": "shown as action button when redacting review (.group=inline/navigation is useless)"
+				},
+				{
+					"command": "appraise.unresolve",
+					"when": "commentController =~ /^appraise/ && !commentThreadIsEmpty",
+					"__comment__": "shown as submit button when redacting comment (.group=inline/navigation is useless)"
+				}
+			],
+			"comments/review/title": [
+				{
+					"command": "appraise.resolve",
+					"group": "inline",
+					"when": "commentController =~ /^appraise/",
+					"__comment__": "shown next to reaction button, on the review title line (.group=inline/navigation is useless)"
+				}
+			]
+		},
+		"views": {
+			"explorer": [
+				{
+					"id": "appraise.tree",
+					"name": "Reviews"
+				}
+			]
+		},
+		"viewsWelcome": [
+			{
+				"view": "appraise.tree",
+				"contents": "No Review to display. You can either:\n- Click on $(sync) to fetch the reviews from the remotes\n- Click on $(add) to create a Review of your HEAD\nHappy Review ! $(rocket)"
+			}
+		]
+	}
+}
